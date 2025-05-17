@@ -1,0 +1,64 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Create a Room</title>
+    <link rel="icon" type="image/svg+xml" href="/static/favicon.svg" />
+    <link rel="shortcut icon" href="/static/favicon.ico" />
+    <link rel="stylesheet" href="/static/css/game.css" />
+    <link rel="stylesheet" href="/static/css/root.css" />
+  </head>
+  <body>
+    <h1>Create a Game Room</h1>
+
+    <div id="question-modal" class="modal">
+      <div class="modal-content">
+        <h2>Create game room</h2>
+        <div class="game-type-selector">
+          <label>
+            <input type="radio" name="game-type" value="MCQ" checked />
+            <span>Multiple Choice Quiz</span>
+          </label>
+          <label>
+            <input type="radio" name="game-type" value="MAP" />
+            <span>Map Challenge</span>
+          </label>
+        </div>
+
+        <div>
+          <input
+            type="text"
+            id="host-username"
+            placeholder="Enter your name..."
+            max="30"
+          />
+        </div>
+        <div>
+          <label for="num-questions">Number of questions: </label>
+          <span id="range-value-q">10</span>
+          <input type="range" id="num-questions" min="10" max="25" value="10" />
+        </div>
+        <div>
+          <label for="time-limit">Time limit (mins): </label>
+          <span id="range-value-t">5</span>
+          <input type="range" id="time-limit" min="3" max="10" value="5" />
+        </div>
+        <div style="display: flex; gap: 10px">
+          <button id="create-room-btn" class="action-btn">Create room</button>
+          <a href="/joinroom" class="action-btn">Join Room</a>
+        </div>
+
+        <p id="error-message" class="error-message hidden"></p>
+      </div>
+    </div>
+
+    <footer>
+      <a href="/">Home</a>
+      <button onclick="toggleTheme()">Toggle Theme</button>
+    </footer>
+
+    <script src="/static/js/create-room.js"></script>
+    <script defer src="/static/js/theme.js"></script>
+  </body>
+</html>

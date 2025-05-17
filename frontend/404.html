@@ -1,0 +1,137 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>404 Page Not Found</title>
+    <link rel="icon" type="image/svg+xml" href="/static/favicon.svg" />
+    <link rel="shortcut icon" href="/static/favicon.ico" />
+    <style>
+      * {
+        padding: 0;
+        margin: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        background: rgb(40, 40, 40);
+        overflow: hidden;
+      }
+
+      main {
+        max-width: 1200px;
+        padding: 20px;
+        margin: auto;
+      }
+
+      p {
+        font-family: "Segoe UI", system-ui, sans-serif;
+        font-size: 130px;
+        margin: 10vh 0 0;
+        text-align: center;
+        letter-spacing: 5px;
+        background-color: black;
+        color: transparent;
+        text-shadow: 2px 2px 3px rgba(255, 255, 255, 0.1);
+        -webkit-background-clip: text;
+        -moz-background-clip: text;
+        background-clip: text;
+        margin-bottom: 50px;
+      }
+
+      p span {
+        font-size: 1.2em;
+      }
+
+      code {
+        color: #bdbdbd;
+        display: block;
+        font-size: 16px;
+        margin: 0 30px 25px;
+      }
+
+      code span {
+        color: #f0c674;
+      }
+
+      code i {
+        color: #b5bd68;
+      }
+
+      code em {
+        color: #b294bb;
+        font-style: unset;
+      }
+
+      code b {
+        color: #81a2be;
+        font-weight: 500;
+      }
+
+      a {
+        color: #8abeb7;
+        font-family: monospace;
+        font-size: 40px;
+        text-decoration: underline;
+
+        display: grid;
+        gap: 10px;
+        justify-items: center;
+        position: fixed;
+        bottom: 20px;
+        left: 50%;
+        transform: translateX(-50%);
+        margin: auto;
+      }
+
+      @media screen and (max-width: 880px) {
+        p {
+          font-size: 14vw;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <main>
+      <p>HTTP: <span>404</span></p>
+      <code id="line1"><span>this_page</span>.<em>not_found</em> = true;</code>
+      <code id="line2" style="display: none"
+        ><span>if</span> (<b>you_spelt_it_wrong</b>)
+        {<span>try_again()</span>;}</code
+      >
+      <code id="line3" style="display: none"
+        ><span>else if (<b>we_screwed_up</b>)</span> {<em>alert</em>(<i
+          >"We're really sorry about that."</i
+        >); <span>window</span>.<em>location</em> = home;}</code
+      >
+    </main>
+    <center><a href="/">HOME</a></center>
+    <script>
+      function type(lineId, t, callback) {
+        var str = document.getElementById(lineId).innerHTML.toString();
+        var i = 0;
+        document.getElementById(lineId).innerHTML = "";
+
+        setTimeout(function () {
+          var se = setInterval(function () {
+            i++;
+            document.getElementById(lineId).innerHTML = str.slice(0, i) + "|";
+            if (i == str.length) {
+              clearInterval(se);
+              document.getElementById(lineId).innerHTML = str;
+              if (callback) callback();
+            }
+          }, 20);
+        }, t);
+      }
+
+      type("line1", 0, function () {
+        document.getElementById("line2").style.display = "block";
+        type("line2", 500, function () {
+          document.getElementById("line3").style.display = "block";
+          type("line3", 500);
+        });
+      });
+    </script>
+  </body>
+</html>

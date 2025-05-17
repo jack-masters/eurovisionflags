@@ -1,0 +1,34 @@
+:root {
+  --primary-color: #1e88e5;
+  --secondary-color: #f1f1f1;
+  --text-color: #333;
+  --secondary-text-color: #777;
+  --modal-bg-color: rgba(0, 0, 0, 0.6);
+  --hover-color: #1565c0;
+  --modal-content-bg: #ffffff;
+  --font-family: "Segoe UI", system-ui, sans-serif;
+  --border-radius: 8px;
+  --transition-duration: 0.3s;
+  --footer-bg: #fafafa;
+  --footer-link-color: #000;
+  --box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  --link-hover-color: #1e88e5;
+  --header-bg: #f7f7f7;
+  --header-text-color: #2c3e50;
+}
+
+[data-theme="dark"] {
+  --primary-color: #4caf50;
+  --secondary-color: #121212;
+  --text-color: #e0e0e0;
+  --secondary-text-color: #bbb;
+  --hover-color: #45a049;
+  --modal-bg-color: rgba(0, 0, 0, 0.8);
+  --modal-content-bg: #1e1e1e;
+  --footer-bg: #1f1f1f;
+  --footer-link-color: #e0e0e0;
+  --box-shadow: 0 4px 8px rgba(255, 255, 255, 0.1);
+  --link-hover-color: #4caf50;
+  --header-bg: #181818;
+  --header-text-color: #e0e0e0;
+}

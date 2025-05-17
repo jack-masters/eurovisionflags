@@ -1,0 +1,89 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" type="image/svg+xml" href="/static/favicon.svg" />
+    <link rel="shortcut icon" href="/static/favicon.ico" />
+    <title>Fun with Flags - Single Player</title>
+    <link rel="stylesheet" href="/static/css/game.css" />
+    <link rel="stylesheet" href="/static/css/root.css" />
+  </head>
+  <body>
+    <h1>Fun with Flags</h1>
+
+    <div id="question-modal" class="modal">
+      <div class="modal-content">
+        <h2>Game Settings</h2>
+        <div class="game-type-selector">
+          <label>
+            <input type="radio" name="game-type" value="MCQ" checked />
+            <span>Multiple Choice Quiz</span>
+          </label>
+          <label>
+            <input type="radio" name="game-type" value="MAP" />
+            <span>Map Challenge</span>
+          </label>
+        </div>
+
+        <br />
+        <br />
+
+        <label for="num-questions"
+          >Number of questions: <span id="range-value">10</span>
+        </label>
+        <input type="range" id="num-questions" min="10" max="25" value="10" />
+
+        <div style="display: flex; gap: 10px; margin-top: 15px">
+          <button id="start-game-btn" class="action-btn">Start Game</button>
+          <button class="action-btn" onclick="toggleTheme()">
+            Toggle Theme
+          </button>
+        </div>
+
+        <p id="error-message" class="error-message hidden"></p>
+      </div>
+    </div>
+
+    <main id="game" class="hidden">
+      <div id="game-mcq" class="hidden">
+        <p id="progress-mcq"></p>
+        <img id="flag" class="flag" src="" alt="Country Flag" />
+        <div id="options" class="options"></div>
+      </div>
+
+      <div id="game-map" class="hidden">
+        <div id="map" class="map-container"></div>
+        <img
+          id="flag-map"
+          class="flag map-flag"
+          src=""
+          alt="Country Flag"
+          draggable="false"
+        />
+        <p id="progress-map"></p>
+      </div>
+    </main>
+
+    <footer>
+      <a href="/">Home</a>
+      <a href="/play">New Game</a>
+      <a href="https://github.com/adimail/fun-with-flags" target="_blank"
+        >GitHub</a
+      >
+      <button onclick="toggleTheme()">Toggle Theme</button>
+    </footer>
+
+    <div id="game-modal" class="modal hidden">
+      <div class="modal-content">
+        <h2>Game Over</h2>
+        <p id="final-score"></p>
+        <a href="/play">Play Again</a>
+        <a href="/">Go Home</a>
+      </div>
+    </div>
+
+    <script defer type="module" src="/static/js/game.singleplayer.js"></script>
+    <script defer src="/static/js/theme.js"></script>
+  </body>
+</html>

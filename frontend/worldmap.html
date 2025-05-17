@@ -1,0 +1,169 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" type="image/svg+xml" href="/static/favicon.svg" />
+    <link rel="shortcut icon" href="/static/favicon.ico" />
+    <title>Explore the World Countries | Zen mode</title>
+    <link
+      rel="stylesheet"
+      href="https://openlayers.org/en/v4.6.5/css/ol.css"
+      type="text/css"
+    />
+    <script src="https://openlayers.org/en/v4.6.5/build/ol.js"></script>
+  </head>
+  <body>
+    <div id="map"></div>
+    <a href="/">Home</a>
+    <style>
+      body {
+        margin: 0;
+        padding: 0;
+        font-family: Arial, sans-serif;
+        background-color: #f4f4f9;
+      }
+      #map {
+        width: 100%;
+        height: 100vh;
+      }
+      a {
+        padding: 10px;
+        border-radius: 7px;
+        position: fixed;
+        bottom: 10px;
+        left: 10px;
+        background-color: forestgreen;
+        color: white;
+        text-decoration: none;
+      }
+      .tooltip {
+        position: absolute;
+        background-color: rgba(255, 255, 255, 0.9);
+        padding: 8px;
+        border-radius: 5px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.15);
+        pointer-events: none;
+        font-size: 14px;
+        color: #333;
+      }
+    </style>
+  </body>
+  <script>
+    var vectorLayer;
+    var highlightLayer;
+    var map;
+    var vectorSource;
+    var highlightSource;
+    var featuresLoaded = false;
+
+    function init() {
+      vectorSource = new ol.source.Vector({
+        format: new ol.format.GeoJSON(),
+      });
+
+      fetch(
+        "https://raw.githubusercontent.com/adimail/fun-with-flags/refs/heads/master/frontend/static/countries.geo.json",
+      )
+        .then((response) => response.json())
+        .then((data) => {
+          const features = vectorSource.getFormat().readFeatures(data, {
+            featureProjection: "EPSG:3857",
+          });
+          vectorSource.addFeatures(features);
+          featuresLoaded = true;
+        });
+
+      vectorLayer = new ol.layer.Vector({
+        source: vectorSource,
+        style: new ol.style.Style({
+          stroke: new ol.style.Stroke({
+            color: "rgba(100, 100, 100, 0.6)",
+            width: 1.5,
+          }),
+          fill: new ol.style.Fill({
+            color: "rgba(100, 200, 255, 0.6)",
+          }),
+        }),
+        updateWhileAnimating: true,
+        updateWhileInteracting: true,
+        renderBuffer: 200,
+      });
+
+      highlightSource = new ol.source.Vector();
+      highlightLayer = new ol.layer.Vector({
+        source: highlightSource,
+        style: new ol.style.Style({
+          stroke: new ol.style.Stroke({
+            color: "rgba(255, 100, 100, 0.8)",
+            width: 2,
+          }),
+          fill: new ol.style.Fill({
+            color: "rgba(255, 100, 100, 0.4)",
+          }),
+        }),
+      });
+
+      const extent = ol.proj.transformExtent(
+        [-180, -85, 180, 85],
+        "EPSG:4326",
+        "EPSG:3857",
+      );
+
+      map = new ol.Map({
+        target: "map",
+        layers: [vectorLayer, highlightLayer],
+        view: new ol.View({
+          center: ol.proj.fromLonLat([0, 0]),
+          zoom: 3,
+          minZoom: 2.5,
+          maxZoom: 5,
+          extent: extent,
+        }),
+        pixelRatio: 1,
+        loadTilesWhileAnimating: true,
+        loadTilesWhileInteracting: true,
+      });
+
+      var tooltip = document.createElement("div");
+      tooltip.className = "tooltip";
+      tooltip.style.display = "none";
+      document.body.appendChild(tooltip);
+
+      map.on("pointermove", function (event) {
+        if (!featuresLoaded) return;
+
+        highlightSource.clear();
+        tooltip.style.display = "none";
+
+        map.forEachFeatureAtPixel(event.pixel, function (feature) {
+          var geometry = feature.getGeometry();
+          var clonedFeature = feature.clone();
+          clonedFeature.setGeometry(geometry);
+          highlightSource.addFeature(clonedFeature);
+
+          var countryName = feature.get("name");
+          if (countryName) {
+            tooltip.style.display = "block";
+            tooltip.style.left = event.originalEvent.pageX + "px";
+            tooltip.style.top = event.originalEvent.pageY + 15 + "px";
+            tooltip.innerHTML = countryName;
+          }
+        });
+      });
+
+      map.on("pointerout", function () {
+        tooltip.style.display = "none";
+        highlightSource.clear();
+      });
+    }
+
+    init();
+
+    document.addEventListener("keydown", function (event) {
+      if (event.key === "Escape") {
+        window.location.href = "/";
+      }
+    });
+  </script>
+</html>

@@ -1,0 +1,150 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Room | Fun with flags</title>
+    <link rel="icon" type="image/svg+xml" href="/static/favicon.svg" />
+    <link rel="shortcut icon" href="/static/favicon.ico" />
+    <link rel="stylesheet" href="/static/css/game.css" />
+    <link rel="stylesheet" href="/static/css/root.css" />
+  </head>
+  <body>
+    <h1>Game Room</h1>
+
+    <div id="question-modal" class="modal hidden">
+      <div class="modal-content">
+        <h2>Enter Username</h2>
+        <div>
+          <input
+            type="text"
+            id="username"
+            placeholder="Enter your name..."
+            maxlength="30"
+          />
+        </div>
+        <div style="modal-actions">
+          <button id="join-room-btn" class="action-btn">Join Room</button>
+        </div>
+        <p id="error-message" class="error-message hidden"></p>
+      </div>
+    </div>
+
+    <div id="room-error-modal" class="modal hidden">
+      <div class="modal-content">
+        <h2>An error has occured</h2>
+        <p id="room-error-message" class="error-message"></p>
+
+        <div class="modal-actions">
+          <a href="/createroom" class="action-btn">Create Room</a>
+          <a href="/joinroom" class="action-btn">Join Room</a>
+          <a href="/" class="action-btn">Home</a>
+        </div>
+      </div>
+    </div>
+
+    <main id="waiting-room" class="waiting-room">
+      <table>
+        <thead>
+          <tr>
+            <th>Room Info</th>
+            <th>Details</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Room Code</td>
+            <td id="room-code-value">Loading...</td>
+          </tr>
+          <tr>
+            <td>Your Name</td>
+            <td id="username-value">Loading...</td>
+          </tr>
+          <tr>
+            <td>Host Name</td>
+            <td id="host-name-value">Loading...</td>
+          </tr>
+          <tr>
+            <td>Number of Players</td>
+            <td id="num-players-value">Loading...</td>
+          </tr>
+          <tr>
+            <td>Game Mode</td>
+            <td id="gamemode-value">Loading...</td>
+          </tr>
+          <tr>
+            <td>Number of Questions</td>
+            <td id="num-questions-value">Loading...</td>
+          </tr>
+          <tr>
+            <td>Time Limit (mins)</td>
+            <td id="time-limit-value">Loading...</td>
+          </tr>
+        </tbody>
+      </table>
+      <p>Share this code with other players to join the room.</p>
+      <section id="player-list-section">
+        <h3>Players in the Room</h3>
+        <ul id="player-list">
+          <!-- Dynamically populated list of players -->
+        </ul>
+      </section>
+      <div class="game-start">
+        <p>Waiting for the host to start the game...</p>
+        <button type="button">Start game</button>
+      </div>
+    </main>
+
+    <main id="game" class="hidden">
+      <div id="game-mcq" class="hidden">
+        <p id="progress-mcq"></p>
+        <img id="flag" class="flag" src="" alt="Country Flag" />
+        <div id="options" class="options"></div>
+      </div>
+
+      <div id="game-map" class="hidden">
+        <div id="map" class="map-container"></div>
+        <img
+          id="flag-map"
+          class="flag map-flag"
+          src=""
+          alt="Country Flag"
+          draggable="false"
+        />
+        <p id="progress-map"></p>
+      </div>
+    </main>
+
+    <div class="sidebar">
+      <div class="sidebar-header">
+        <h2>Leaderboard</h2>
+        <button class="close-sidebar">&times;</button>
+      </div>
+      <div class="leaderboard-content">
+        <table class="leaderboard-table">
+          <thead>
+            <tr>
+              <th>Rank</th>
+              <th>Name</th>
+              <th>Score</th>
+            </tr>
+          </thead>
+          <tbody id="leaderboard-body">
+            <!-- Will be populated -->
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <footer>
+      <p id="game-timer"></p>
+
+      <a href="/">Home</a>
+      <button onclick="toggleTheme()">Toggle Theme</button>
+      <button class="leaderboard-icon">Leaderboard</button>
+    </footer>
+
+    <script type="module" src="/static/js/game.multiplayer.js"></script>
+    <script defer src="/static/js/theme.js"></script>
+  </body>
+</html>

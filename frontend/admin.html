@@ -1,0 +1,90 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Available Rooms</title>
+    <link rel="stylesheet" href="/static/css/admin.css" />
+  </head>
+  <body>
+    <div class="header">
+      <h1>Available Rooms</h1>
+      <button class="refresh-btn" onclick="fetchRooms()">Refresh</button>
+    </div>
+    <div id="error-message" class="error"></div>
+    <div id="rooms-container"></div>
+
+    <script>
+      const fetchRooms = async () => {
+        const errorMessage = document.getElementById("error-message");
+        const roomsContainer = document.getElementById("rooms-container");
+        errorMessage.textContent = "";
+        roomsContainer.innerHTML = "";
+
+        try {
+          const response = await fetch("/api/rooms");
+          if (!response.ok) {
+            throw new Error(
+              response.status === 404
+                ? "No rooms available."
+                : "Failed to fetch rooms.",
+            );
+          }
+
+          const data = await response.json();
+          const rooms = data.rooms;
+
+          if (rooms.length === 0) {
+            throw new Error("No rooms available.");
+          }
+
+          const table = document.createElement("table");
+          table.innerHTML = `
+            <thead>
+              <tr>
+                <th>Room Code</th>
+                <th>Host Name</th>
+                <th>Time Limit</th>
+                <th>Number of Questions</th>
+                <th>Game Started</th>
+                <th>Players</th>
+              </tr>
+            </thead>
+            <tbody>
+              ${rooms
+                .map(
+                  (room) => `
+                <tr class="${room.gameStarted ? "game-started" : "game-waiting"}">
+                  <td>${room.code}</td>
+                  <td>${room.host}</td>
+                  <td>${room.timeLimit} mins</td>
+                  <td>${room.numQuestions}</td>
+                  <td>${room.gameStarted ? "Yes" : "No"}</td>
+                  <td>
+                    <ul>
+                      ${room.players
+                        .map(
+                          (player) => `
+                        <li>${player.username} (Score: ${player.score})</li>
+                      `,
+                        )
+                        .join("")}
+                    </ul>
+                  </td>
+                </tr>
+              `,
+                )
+                .join("")}
+            </tbody>
+          `;
+
+          roomsContainer.appendChild(table);
+        } catch (error) {
+          errorMessage.textContent = error.message;
+        }
+      };
+
+      window.onload = fetchRooms;
+    </script>
+  </body>
+</html>
